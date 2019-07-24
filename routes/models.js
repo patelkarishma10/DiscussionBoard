@@ -15,4 +15,12 @@ router.get("/all", (req, res) => {
     .catch(err => res.status(404).json({ noItems: "There are no items" }));
 });
 
+router.post("/create", (req, res) =>{
+    const item = new Item({
+        username: req.body.username,
+        content: req.body.content
+    })
+item.save().then(()=> console.log('complete'));
+res.json(item);
+});
 module.exports = router;
