@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const app = express();
 
 const item = require("./routes/item");
-const models = require("./routes/models");
 
 
 let uri = 'mongodb://localhost:27017/example2';
@@ -20,7 +19,6 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 
 app.use("/item", item);
-app.use("/models", models);
 
 const port = process.env.PORT || 5000;
 
