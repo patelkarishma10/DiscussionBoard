@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Item = require("../models/item");
-const UsernameTest = require("../username");
+const itemValidation = require("../validation/item");
 
 router.get("/all", (req, res) => {
   const errors = {};
@@ -17,7 +17,7 @@ router.get("/all", (req, res) => {
 });
 
 router.post("/create", (req, res) =>{
-    const {errors, isValid} = UsernameTest(req.body);
+    const {errors, isValid} = itemValidation(req.body);
     if (!isValid) {
         return res.status(400).json(errors);
     }

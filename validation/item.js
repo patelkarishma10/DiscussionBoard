@@ -1,5 +1,5 @@
 const Validator = require("validator");
-const isEmpty = require("./is-empty");
+const isEmpty = require("../is-empty");
  module.exports = function validateLoginInput(item) {
 let errors = {};
  // if these values are not present in the data object we are validating then they will be set to empty strings for the Validator.isEmpty
