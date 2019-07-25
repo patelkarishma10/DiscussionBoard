@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 router.get("/all", (req, res) => {
   const errors = {};
   //{}, '-email'
-  Item.find()
+  Item.find({}, '-email')
     .then(items => {
       if (!items) {
         errors.noItems = "There are no items";
@@ -43,35 +43,35 @@ router.post("/create", (req, res) =>{
 
 });
 
-// router.delete("/delete", (req,res) =>{
-//     Item.deleteOne({'username': req.body.username})
-//     .then(({ok, n}) => {
-//         res.json({ noItems: "Deleted :)" });
-//     })
-//     .catch(err => res.status(404).json({ noItems: "There are no items" }));
-// });
+router.delete("/deleteItem", (req, res) => {
 
-router.delete("/delete", (req,res) =>{
-    errors = {};
-const email = req.body.email;
-  const hashedValue = req.body.hashedValue;
-  //Check Value
-  bcrypt.compare(email, hashedValue).then(isMatch => {
-    if (isMatch) {
-    Item.deleteOne({'email': req.body.hashedValue})
-    .then(({ok, n}) => {
-        res.json({ message: "Deleted :)" });
-    })
-    .catch(err => res.status(404).json(err));
-    } else {
-    errors.value = "Incorrect";
-    return res.status(400).json(errors);
-    }
-  });
+  let errors = {};
+
+  const email = req.body.email;
+  const id = req.body._id;
+
+  Item.findById(id).then(item => {
+
+    bcrypt.compare(email, item.email).then(isMatch => {
+      if (isMatch) {
+
+        item.remove()
+          .then(() => {
+            res.json({ success: true });
+          })
+          .catch(err =>
+            res.status(404).json({ itemnotfound: "No item found" })
+          );
+
+      } else {
+        errors.email = "Email Incorrect";
+        return res.status(400).json(errors);
+      }
+    });
+
+  }).catch(err => res.status(404).json({ noItem: "There is no item with this ID" }));
+
 });
-
-
-
 
 
 
