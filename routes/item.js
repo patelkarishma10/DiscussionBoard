@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Item = require("../models/item");
+const UsernameTest = require("../username");
 
 router.get("/all", (req, res) => {
   const errors = {};
@@ -16,10 +17,14 @@ router.get("/all", (req, res) => {
 });
 
 router.post("/create", (req, res) =>{
+    const {errors, isValid} = UsernameTest(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors);
+    }
     const item = new Item({
         username: req.body.username,
         content: req.body.content
-    })
+    });
     item.save()
         .then(()=> {
             res.json(item);
