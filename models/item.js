@@ -6,7 +6,14 @@ let itemSchema = new Schema({
         type: String,
         required: true
     },
-    content: String
+    content: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    }
 });
 
 let Item = mongoose.model('Item', itemSchema);
